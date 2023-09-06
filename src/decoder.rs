@@ -35,7 +35,7 @@ impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
         for location in locations {
             match location {
                 Location::QR(qrloc) => {
-                    let extracted = self.qr.extract.extract(&prepared, qrloc);
+                    let extracted = self.qr.extract.extract(&prepared, qrloc.clone());
                     let decoded = self.qr.decode.decode(extracted);
 
                     all_decoded.push(decoded.map_err(Error::from));
