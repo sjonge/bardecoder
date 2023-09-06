@@ -10,9 +10,9 @@ use crate::util::qr::{QRData, QRError, QRInfo, QRLocation};
 
 /// Struct to hold logic to do the entire decoding
 pub struct Decoder<IMG, PREPD, RESULT> {
-    pub prepare: Box<dyn Prepare<IMG, PREPD>>,
-    pub detect: Box<dyn Detect<PREPD>>,
-    pub qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
+    prepare: Box<dyn Prepare<IMG, PREPD>>,
+    detect: Box<dyn Detect<PREPD>>,
+    qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
 }
 
 impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
@@ -49,9 +49,9 @@ impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
 
 /// Struct to hold logic to do the entire decoding
 pub struct DecoderWithLocation<IMG, PREPD, RESULT> {
-    pub prepare: Box<dyn Prepare<IMG, PREPD>>,
-    pub detect: Box<dyn Detect<PREPD>>,
-    pub qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
+    prepare: Box<dyn Prepare<IMG, PREPD>>,
+    detect: Box<dyn Detect<PREPD>>,
+    qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
 }
 
 impl<IMG, PREPD, RESULT> DecoderWithLocation<IMG, PREPD, RESULT> {
