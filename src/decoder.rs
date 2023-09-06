@@ -192,7 +192,7 @@ impl<IMG, PREPD, RESULT> DecoderBuilder<IMG, PREPD, RESULT> {
     /// # Panics
     ///
     /// Will panic if any of the required components are missing
-    pub fn build_with_location(self) -> Decoder<IMG, PREPD, (RESULT, QRLocation)> {
+    pub fn build_with_location(self) -> DecoderWithLocation<IMG, PREPD, RESULT> {
         if self.prepare.is_none() {
             panic!("Cannot build Decoder without Prepare component");
         }
