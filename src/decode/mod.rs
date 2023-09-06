@@ -1,6 +1,6 @@
 //! Decode data extracted from an image
 
-mod qr;
+pub mod qr;
 
 pub use self::qr::decoder::{QRDecoder, QRDecoderWithInfo};
 
