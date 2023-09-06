@@ -10,9 +10,9 @@ use crate::util::qr::{QRData, QRError, QRInfo, QRLocation};
 
 /// Struct to hold logic to do the entire decoding
 pub struct Decoder<IMG, PREPD, RESULT> {
-    prepare: Box<dyn Prepare<IMG, PREPD>>,
-    detect: Box<dyn Detect<PREPD>>,
-    qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
+    pub prepare: Box<dyn Prepare<IMG, PREPD>>,
+    pub detect: Box<dyn Detect<PREPD>>,
+    pub qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
 }
 
 impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
@@ -142,6 +142,27 @@ impl<IMG, PREPD, RESULT> DecoderBuilder<IMG, PREPD, RESULT> {
         }
 
         Decoder {
+            prepare: self.prepare.unwrap(),
+            detect: self.detect.unwrap(),
+            qr: self.qr.unwrap(),
+        }
+    }
+
+    /// Build actual Decoder with a location
+    ///
+    /// # Panics
+    ///
+    /// Will panic if any of the required components are missing
+    pub fn build_with_location(self) -> Decoder<IMG, PREPD, RESULT> {
+        if self.prepare.is_none() {
+            panic!("Cannot build Decoder without Prepare component");
+        }
+
+        if self.detect.is_none() {
+            panic!("Cannot build Decoder without Detect component");
+        }
+
+        DecoderWithLocation {
             prepare: self.prepare.unwrap(),
             detect: self.detect.unwrap(),
             qr: self.qr.unwrap(),
