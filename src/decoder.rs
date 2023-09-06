@@ -47,6 +47,45 @@ impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
     }
 }
 
+/// Struct to hold logic to do the entire decoding
+pub struct DecoderWithLocation<IMG, PREPD, RESULT> {
+    pub prepare: Box<dyn Prepare<IMG, PREPD>>,
+    pub detect: Box<dyn Detect<PREPD>>,
+    pub qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
+}
+
+impl<IMG, PREPD, RESULT> DecoderWithLocation<IMG, PREPD, RESULT> {
+    /// Do the actual decoding
+    ///
+    /// Logic is run in the following order:
+    /// * prepare
+    /// * detect
+    /// * per detected code the associated extract and decode functions
+    pub fn decode(&self, source: &IMG) -> Vec<Result<(RESULT, QRLocation), Error>> {
+        let prepared = self.prepare.prepare(source);
+        let locations = self.detect.detect(&prepared);
+
+        if locations.is_empty() {
+            return vec![];
+        }
+
+        let mut all_decoded = vec![];
+
+        for location in locations {
+            match location {
+                Location::QR(qrloc) => {
+                    let extracted = self.qr.extract.extract(&prepared, qrloc);
+                    let decoded = self.qr.decode.decode(extracted);
+
+                    all_decoded.push((decoded.map_err(Error::from), qrloc));
+                }
+            }
+        }
+
+        all_decoded
+    }
+}
+
 /// Create a default Decoder
 ///
 /// It will use the following components:
