@@ -80,7 +80,7 @@ impl Index<[u32; 2]> for QRData {
 }
 
 /// Location of the QR Code in the source image, in pixels
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct QRLocation {
     /// Center of the top left finder pattern, in pixels, relative to the QR Code
     pub top_left: Point,
